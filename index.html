@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSL04MK4K5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KSL04MK4K5');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-VaultSDK</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --primary: #38bdf8;
+            --secondary: #22c55e;
+            --text: #f1f5f9;
+            --border: #334155;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 900px;
+            width: 100%;
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border: 1px solid #0ea5e9;
+            color: #0ea5e9;
+            background: rgba(14, 165, 233, 0.1);
+            transition: all 0.3s;
+        }
+
+        .ready {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .metrics {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .metric-pill {
+            background: #334155;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--primary);
+            border: 1px solid #475569;
+            display: flex;
+            gap: 8px;
+        }
+
+        .time-val {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #94a3b8;
+        }
+
+        textarea,
+        pre {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            background: #0f172a;
+            color: var(--primary);
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        pre {
+            height: 250px;
+            color: var(--secondary);
+            white-space: pre-wrap;
+            margin: 0;
+            overflow-y: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        button {
+            flex: 1;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        #btnInit {
+            background: #64748b;
+            color: white;
+        }
+
+        #btnInit:hover {
+            background: #475569;
+        }
+
+        #btnCollect {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        #btnCollect:hover {
+            background: #0284c7;
+        }
+
+        #btnDecrypt {
+            background: var(--secondary);
+            color: white;
+        }
+
+        #btnDecrypt:hover {
+            background: #16a34a;
+        }
+
+        button:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+            filter: grayscale(1);
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 30px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>🛡️ To-VaultSDK</h1>
+        <div id="statusBadge" class="status">Puede proporcionar sus propias llaves...</div>
+
+        <div class="grid">
+            <div>
+                <label>Llave Pública (PEM)</label>
+                <textarea id="pubKeyInput">-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvMPqgQizf2mZ+FLPA5j0
+k7+iuPql+w5f9hE1kpGnWtrIfE3LY++p46QxmtwOObSmqN21MKBRSmo68CmBRl+7
+87J2QQ+jhCnVbxNXOGowb2ixnrJF5gPyv0iVLL8lY3k0AUPPxvilGcpwRsRfs7M9
+tLNBNYRXOFypfELHbqglFS/SRpQLDzH+UzFQ3lAtE8GiCTXtro5gWuhdcubg4f4/
+2dvegqlSHsAatFjH6E+MnfQ9Xwimwwyz5oJgIcI28iqeoJ4HOngshqxmgbqng2OH
+SEQ6hrfKLRNcMWNywdu4lu/4xELDPFGbKlKRR7Mrn4hIPzZkwg4hjm6JdPaA4kS7
++wIDAQAB
+-----END PUBLIC KEY-----
+</textarea>
+            </div>
+            <div>
+                <label>Llave Privada (PKCS#8 PEM)</label>
+                <textarea id="privKeyInput">-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC8w+qBCLN/aZn4
+Us8DmPSTv6K4+qX7Dl/2ETWSkada2sh8Tctj76njpDGa3A45tKao3bUwoFFKajrw
+KYFGX7vzsnZBD6OEKdVvE1c4ajBvaLGeskXmA/K/SJUsvyVjeTQBQ8/G+KUZynBG
+xF+zsz20s0E1hFc4XKl8QsduqCUVL9JGlAsPMf5TMVDeUC0TwaIJNe2ujmBa6F1y
+5uDh/j/Z296CqVIewBq0WMfoT4yd9D1fCKbDDLPmgmAhwjbyKp6gngc6eCyGrGaB
+uqeDY4dIRDqGt8otE1wxY3LB27iW7/jEQsM8UZsqUpFHsyufiEg/NmTCDiGObol0
+9oDiRLv7AgMBAAECggEABPoldMGF+hYOuT11t+KQkFS9NaNmPPhkD1jk0LiGcR7T
+qnNiqX/oOthZdnvW5C6fNlSiMmYHvq6OX0a44eIkUoiiFZUT+qgfuI4J/rLOFCHu
+jQCmVypDfEetp0Bi+/x2IpJnKBfmQofT7gm/fD19owYW8hJLOnE3Bs+78m78i1Jr
+4TFW5DvoEbY1cZ7G4sMxkX75xPz4i6xkG4lFe5cfPdf0PIWmARzT0pP2TcAMlAUS
+YFOo1DX6VrVW1SEXm2fSSXjihZKewn0SdG3fRX/NK6njcrmuUHCahEEoGP4zNE/n
+1c4wdfs29TpMndqSY/zMweO63HxpVxsout4pqEN4AQKBgQDdd/HeO32ovoGY11Xh
+wq82H6orY7Jrf2Gp95oZUFmO9Bn7ewwvog+URyAujF4hscOsu4MBdGNNcENfDtpB
+P7e4dg2ffAP7G5FpciMPpb5CqC4vlTvcM7RR6RkxuCowGvMTd05Qumm6lqrXvv+r
+ndxGVfNYJwMpZLl0GSjM0CU6ywKBgQDaMpndx3AkJ+eMM2OzYoqrN7AEE1eUwxdT
+fg7/vNAfkbp3sy+5MGsNoDdIg0xU/ImxBi70u+AiNks4aW+N62whO984kKezCCrZ
+SG6/qaKAjnKeaG2NqPBhRDC4bFDpTB6m0yxoaHjsXPNNqNJHVME6/oXmpdE3pEzP
+uZjihrJtkQKBgQDLMzk9YTI7eIfqF3FaEcm3DDiTVQcocJjIXUELhtiVPEz2m4Cj
+17sZnmTdsLbRjYvu2aEq3YIbVCzMdBE3GuJToiV/tkbkx/eUWz/mJHm8KRkvWWqx
+8NK68PfH0aULvD5ZFvdJRLCrnYAlMb7d1Jp+AnCi6jCRczRhXJA906DFHwKBgFzA
+092OESKdf/V+RuyTgCUGeCFTY5COWhUY6iFWTxaMaTrHBgtwBKH3MGj3v3QFIjcJ
+TN6mGsIQWGtzjoNCx2VdQSeXfmJBn41cGBALeVOyuhCSjbeBUCXYyekryj1SKVl7
+PU5o0raPULH7iN/frIB6f8srQ8OmaSyIVfA9mA2xAoGAY70UhSTZhKPi0zfLhG2F
+WIg2HzMSP8Pwxu5T4i0DyHpHQkSiPQMaywLiech2Rob94QOV6HPkqM/TqVbw0+I6
+RfAq3ubIGKKlPbAdGxn7Y8RgzYIpfVtg4MNIgVuB7nxtvfe4hVS8qIQuYOUlKhUu
+XAYLonqKXY61xgBO7ZnI4KA=
+-----END PRIVATE KEY-----
+</textarea>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button id="btnInit">1. Inicializar SDK</button>
+            <button id="btnCollect" disabled>2. Ejecutar Recolección</button>
+        </div>
+
+        <div class="metrics">
+            <div class="metric-pill">Cifrado: <span id="timeEncrypt" class="time-val">0.00ms</span></div>
+        </div>
+
+        <label>Token JWE Resultante (Cifrado)</label>
+        <textarea id="tokenOutput" readonly placeholder="El token aparecerá después de la recolección..."></textarea>
+        <hr>
+        <div class="btn-group">
+            <button id="btnDecrypt" disabled>3. Simular Descifrado en Servidor</button>
+            <button style="visibility: hidden;"></button>
+        </div>
+
+        <div class="metrics">
+            <div class="metric-pill">Descifrado: <span id="timeDecrypt" class="time-val">0.00ms</span></div>
+        </div>
+
+        <label style="margin-top: 20px;">Datos Recuperados (JSON Original)</label>
+        <pre id="jsonOutput">Esperando acción de descifrado...</pre>
+    </div>
+
+    <script src="./dist/to-vault.min.js"></script>
+
+    <script>
+        const ui = {
+            status: document.getElementById('statusBadge'),
+            pub: document.getElementById('pubKeyInput'),
+            priv: document.getElementById('privKeyInput'),
+            token: document.getElementById('tokenOutput'),
+            json: document.getElementById('jsonOutput'),
+            btnInit: document.getElementById('btnInit'),
+            btnCollect: document.getElementById('btnCollect'),
+            btnDecrypt: document.getElementById('btnDecrypt'),
+            tEnc: document.getElementById('timeEncrypt'),
+            tDec: document.getElementById('timeDecrypt')
+        };
+
+        // --- 1. INICIALIZACIÓN ---
+        ui.btnInit.onclick = async () => {
+            const pubKey = ui.pub.value.trim();
+            if (!pubKey.includes("BEGIN PUBLIC KEY")) return alert("Llave pública inválida");
+
+            try {
+                await ToVault.init({
+                    projectId: "QA-LAB-2026",
+                    publicKey: pubKey,
+                    userId: "user-test-rafael"
+                });
+                ui.status.innerText = "✓ SDK Inicializado y configurado";
+                ui.status.classList.add('ready');
+                ui.btnCollect.disabled = false;
+            } catch (e) {
+                alert("Error al inicializar: " + e.message);
+            }
+        };
+
+        // --- 2. RECOLECCIÓN (CIFRADO + MÉTRICA) ---
+        ui.btnCollect.onclick = async () => {
+            ui.btnCollect.disabled = true;
+            const start = performance.now();
+
+            try {
+                const token = await ToVault.collect();
+                const end = performance.now();
+
+                ui.tEnc.innerText = `${(end - start).toFixed(2)}ms`;
+                ui.token.value = token;
+                ui.btnDecrypt.disabled = false;
+            } catch (e) {
+                alert("Error en recolección: " + e.message);
+            } finally {
+                ui.btnCollect.disabled = false;
+            }
+        };
+
+        // --- 3. DESCIFRADO (EL "ABRIDOR" + MÉTRICA) ---
+        ui.btnDecrypt.onclick = async () => {
+            try {
+                const privPem = ui.priv.value.trim();
+                const token = ui.token.value;
+                if (!privPem) return alert("Pega la llave privada PKCS#8");
+
+                const start = performance.now();
+
+                // Desestructurar el JWE (Key.IV.Ciphertext)
+                const [encKeyB64, ivB64, cipherB64] = token.split('.');
+
+                // Importar llave privada
+                const privKey = await importPrivateKey(privPem);
+
+                // Descifrar la llave AES envuelta
+                const aesKeyBuffer = await window.crypto.subtle.decrypt(
+                    { name: "RSA-OAEP" },
+                    privKey,
+                    base64ToBuffer(encKeyB64)
+                );
+
+                // Importar la llave AES recuperada
+                const aesKey = await window.crypto.subtle.importKey(
+                    "raw", aesKeyBuffer, "AES-GCM", true, ["decrypt"]
+                );
+
+                // Descifrar el payload final
+                const decryptedBuffer = await window.crypto.subtle.decrypt(
+                    { name: "AES-GCM", iv: base64ToBuffer(ivB64) },
+                    aesKey,
+                    base64ToBuffer(cipherB64)
+                );
+
+                const end = performance.now();
+                ui.tDec.innerText = `${(end - start).toFixed(2)}ms`;
+
+                const decoded = new TextDecoder().decode(decryptedBuffer);
+                ui.json.innerText = JSON.stringify(JSON.parse(decoded), null, 4);
+            } catch (e) {
+                console.error(e);
+                alert("Error de descifrado: Revisa que la llave privada sea PKCS#8 y coincida con la pública.");
+            }
+        };
+
+        // Helpers Criptográficos
+        async function importPrivateKey(pem) {
+            const clean = pem.replace(/-----(BEGIN|END) (RSA )?PRIVATE KEY-----/g, "").replace(/\s/g, "");
+            return await window.crypto.subtle.importKey(
+                "pkcs8",
+                base64ToBuffer(clean),
+                { name: "RSA-OAEP", hash: "SHA-256" },
+                true,
+                ["decrypt"]
+            );
+        }
+
+        function base64ToBuffer(b64) {
+            return Uint8Array.from(atob(b64), c => c.charCodeAt(0)).buffer;
+        }
+    </script>
+
+</body>
+
+</html>
